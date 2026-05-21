@@ -1,60 +1,149 @@
-# Caesar-cipher cryptanalyzer
+# Криптоаналізатор шифру Цезаря
 
-Starter project for the JavaRush "Module 1. Java Syntax" final project. Fork this repo, implement the missing pieces, and open a pull request back.
+Стартовий репозиторій для **підсумкового проєкту модуля «Java Syntax»** курсу JavaRush. Зроби форк, реалізуй те, чого бракує, і відкрий Pull Request назад в основний репозиторій.
 
-The canonical assignment spec is `src/main/resources/project-description.pdf` (Ukrainian).
+Канонічне технічне завдання — `src/main/resources/project-description.pdf`.
 
-## How to do this assignment
+---
 
-1. Fork this repo on GitHub.
-2. Clone your fork locally.
-3. Work through `CHECKLIST.md` top-to-bottom.
-4. Run `./mvnw test` to see what still needs to pass.
-5. When you're done, run `./mvnw package` and upload `target/GNEW-M1-FP-1.0-SNAPSHOT.jar` to your fork's GitHub Releases.
-6. Open a PR back to the upstream repo. The PR template asks you the four questions the mentor will look at.
+## Про проєкт
 
-## What's already done
+Цей проєкт навчає реалізації класичного **шифру Цезаря** на Java з трьома режимами роботи.
 
-- `Cypher.encrypt` — Caesar shift over the A–Z/a–z alphabet, cyclical.
-- `ArgumentsParser` — option-style CLI (`-e -k 5 -f path`).
-- `Main` — wires ENCRYPT end-to-end.
-- `EncryptedFileNamer` — produces `foo [ENCRYPTED].txt` and `foo [DECRYPTED].txt` output paths.
-- A full test suite — most tests are red until you implement the missing pieces. The failures are the assignment.
+### Що таке шифр Цезаря
 
-## What you implement
+Найдавніший і найпростіший шифр підставлення: кожну літеру відкритого тексту замінюють на літеру, що стоїть на певне число позицій далі в алфавіті (це число називають **ключем**). Наприклад, з ключем 3: «A» → «D», «B» → «E», «C» → «F». Розшифрування — той самий зсув у зворотному напрямку.
 
-- `Cypher.decrypt` — currently a stub that throws.
-- `BruteForce.bruteForce` — currently a stub that throws.
-- The `DECRYPT` and `BRUTEFORCE` branches in `Main` — currently throw `UnsupportedOperationException`.
+### Що робить програма
 
-See `CHECKLIST.md` for the test-driven view of these.
+- **Шифрування** — перетворює відкритий текст у шифротекст з вибраним ключем. Результат — файл з міткою `[ENCRYPTED]` в імені.
+- **Розшифрування** — обернена операція, потребує знання ключа. Результат — файл з міткою `[DECRYPTED]`.
+- **Перебір ключів (brute force)** — автоматичний криптоаналіз: програма сама знаходить правильний ключ і відновлює оригінальний текст з шифру, не отримуючи ключ ззовні.
 
-## How to run
+Алфавіт за замовчуванням — англійський (A–Z + a–z, 52 символи). Підтримка українського алфавіту входить до повного завдання — її треба додати.
+
+### Чого навчає проєкт
+
+- **Базовий синтаксис Java:** класи, методи, поля, конструктори, enum'и, цикли, умови.
+- **Робота з рядками і колекціями:** `String`, `StringBuilder`, `ArrayList`, `Collections.rotate`.
+- **Файловий I/O:** `java.nio.file.Path`, `Files.readString`, `Files.writeString`.
+- **Обробка винятків:** `try-catch`, користувацькі помилки.
+- **Розбір аргументів командного рядка** (без зовнішніх бібліотек).
+- **Поняття одиничного тестування:** як читати тести, як TDD допомагає вести розробку.
+- **Невеликий, але реалістичний застосунок** від ідеї до runnable JAR у GitHub Releases.
+
+---
+
+## Як виконувати завдання
+
+1. Зроби **форк** цього репозиторію на GitHub.
+2. **Склонуй** свій форк локально.
+3. Пройди по `CHECKLIST.md` зверху вниз — там вказано, що саме треба реалізувати і який тест це перевіряє.
+4. Регулярно запускай `./mvnw test`, щоб бачити прогрес — поступово червоних тестів буде ставати менше.
+5. Коли все готове, запусти `./mvnw package` і завантаж `target/GNEW-M1-FP-1.0-SNAPSHOT.jar` у **GitHub Releases** на своєму форку.
+6. Відкрий **Pull Request** до основного репозиторію. У шаблоні PR є 4 питання — на них дивитиметься ментор під час перевірки.
+
+---
+
+## Що вже реалізовано
+
+- **`Cypher.encrypt`** — шифр Цезаря по 52-символьному алфавіту (A–Z + a–z), циклічний.
+- **`ArgumentsParser`** — розбір аргументів командного рядка (`-e -k 5 -f шлях`).
+- **`Main`** — точка входу. Гілка `ENCRYPT` працює повністю; гілки `DECRYPT` і `BRUTEFORCE` уже викликають відповідні класи — треба лише реалізувати самі класи.
+- **`EncryptedFileNamer`** — формує імена вихідних файлів: `foo [ENCRYPTED].txt` і `foo [DECRYPTED].txt` (правильно замінює мітку, а не подвоює її).
+- **Повний набір тестів** — базові операції, межові випадки, валідація аргументів, тести англійською і українською мовою. Більшість тестів зараз червоні — це нормально, саме їх ти і будеш зеленити. Кожен тест має Javadoc-опис українською: що перевіряє і як зробити, щоб він проходив.
+
+## Що треба реалізувати
+
+- **`Cypher.decrypt(String input, int key)`** — зворотна операція до `encrypt`. Зараз кидає `UnsupportedOperationException`. Підказка: відношення з `encrypt` дуже просте — подумай про знак ключа.
+- **`BruteForce.bruteForce(String cipherText)`** — автоматичний підбір ключа і розшифрування без знання ключа. Зараз — заглушка. Два класичні підходи: словниковий (рахуй частоти слів «the», «and», «of» тощо) або частотний аналіз (порівняй розподіл частот літер з еталонним для мови).
+- **Підтримка українського алфавіту** — тести `MainTest$UkrainianLanguageTest` за замовчуванням увімкнені і червоні. Створи `UkrainianLanguage extends Language` з 33-літерним алфавітом і переробіть `Cypher`, щоб він приймав `Language`.
+
+Детальний план зі співставленням «що реалізувати ↔ який тест зеленіє» — у файлі **`CHECKLIST.md`**.
+
+---
+
+## Як запускати
+
+```bash
+./mvnw test                                   # запустити всі тести
+./mvnw -Dtest=CypherTest test                 # запустити один клас тестів
+./mvnw -Dtest='MainTest$EnglishTests' test    # запустити одну групу тестів
+./mvnw package                                # зібрати jar у target/
+```
+
+Maven встановлювати не треба — `./mvnw` сам завантажить потрібну версію при першому запуску.
+
+## Інтерфейс командного рядка
 
 ```
-./mvnw test                                   # run the whole test suite
-./mvnw -Dtest=CypherTest test                 # run one test class
-./mvnw package                                # build target/GNEW-M1-FP-1.0-SNAPSHOT.jar
+-e   шифрування (encrypt)
+-d   розшифрування (decrypt)
+-bf  перебір ключів (brute force)
+-k   ключ — ціле число зі знаком; обов'язковий для -e і -d
+-f   шлях до вхідного файлу
 ```
 
-## CLI
+Приклади:
 
-```
--e   encrypt
--d   decrypt
--bf  brute force
--k   key (signed integer, required for -e and -d)
--f   file path
-```
-
-Examples:
-
-```
+```bash
 java -jar target/GNEW-M1-FP-1.0-SNAPSHOT.jar -e -k 5 -f /path/to/file.txt
 java -jar target/GNEW-M1-FP-1.0-SNAPSHOT.jar -d -k 5 -f "/path/to/file [ENCRYPTED].txt"
 java -jar target/GNEW-M1-FP-1.0-SNAPSHOT.jar -bf -f "/path/to/file [ENCRYPTED].txt"
 ```
 
-Arguments may appear in any order: `-e -f path -k 5` works too.
+Порядок аргументів довільний: `-e -f шлях -k 5` теж працює.
 
-> **Note:** The PDF spec describes a positional CLI (`ENCRYPT path key`). This starter uses option-style instead — both have their fans, and the tests are pinned to option-style. Your implementation should match the starter, not the PDF, for the CLI surface.
+> **Увага:** у PDF з технічним завданням описано **позиційний** CLI (`ENCRYPT шлях ключ`). У цьому стартовому коді використовується **інший** формат — з прапорцями (`-e -k 5 -f`), і саме цей формат перевіряють тести. Реалізуй CLI як у стартовому коді, не як у PDF.
+
+---
+
+## Структура проєкту
+
+```
+src/
+├── main/
+│   ├── java/ua/com/javarush/gnew/
+│   │   ├── Main.java                       — точка входу
+│   │   ├── crypto/
+│   │   │   ├── Cypher.java                 — шифр Цезаря (encrypt готовий, decrypt — заглушка)
+│   │   │   └── BruteForce.java             — перебір ключів (заглушка)
+│   │   ├── file/
+│   │   │   ├── FileManager.java            — читання/запис файлів
+│   │   │   └── EncryptedFileNamer.java     — імена вихідних файлів [ENCRYPTED]/[DECRYPTED]
+│   │   ├── language/
+│   │   │   ├── Language.java               — абстракція алфавіту (точка розширення для української)
+│   │   │   └── EnglishLanguage.java        — англійський алфавіт як приклад
+│   │   └── runner/
+│   │       ├── ArgumentsParser.java        — парсер CLI-аргументів
+│   │       ├── Command.java                — enum: ENCRYPT, DECRYPT, BRUTEFORCE
+│   │       └── RunOptions.java             — результат парсингу
+│   └── resources/
+│       ├── input.txt                       — приклад вхідного файлу для ручного тестування
+│       └── project-description.pdf         — офіційне ТЗ
+└── test/
+    ├── java/ua/com/javarush/gnew/          — тести з Javadoc-описом українською
+    └── resources/
+        ├── hamlet.txt                      — уривок «Гамлета» (фікстура для англійських тестів)
+        └── orwell.txt                      — уривок «1984» Орвелла (фікстура для українських тестів)
+```
+
+---
+
+## Поради по реалізації
+
+- **Починай з малого:** реалізуй `Cypher.decrypt` — це 1–2 рядки коду — і одразу зазеленить 5+ тестів.
+- **Не зловживай статичними методами та змінними.** Використовуй об'єкти.
+- **Слідуй наявній структурі пакетів** — не змішуй обов'язки класів.
+- **Маленькі методи краще за великі** — до 20 рядків вважається добрим тоном.
+- **Перед PR** обов'язково запусти `./mvnw test` і прочитай вивід — переконайся, що всі тести зелені.
+- **Читай Javadoc у тестах** — там написано, що саме перевіряє кожен тест і як зробити, щоб він проходив.
+
+## Що дивитиметься ментор під час перевірки
+
+1. Чітке дотримання вимог з ТЗ.
+2. Простота і читабельність коду.
+3. Коректне використання ООП (наскільки можливо в межах синтаксис-проєкту).
+4. Цікаві рішення в реалізації `BruteForce` (підхід до оцінки кандидатів).
+5. Чи реалізована підтримка української мови.
+6. Відповіді у шаблоні Pull Request — особливо секція «Чого не вдалося зробити».
