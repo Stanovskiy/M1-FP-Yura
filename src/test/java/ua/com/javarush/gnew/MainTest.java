@@ -19,78 +19,18 @@ class MainTest {
     private static final String ENCRYPT_COMMAND = "-e";
     private static final String DECRYPT_COMMAND = "-d";
     private static final String BF_COMMAND = "-bf";
-    private static final String HAMLET_EN = """
-            THE TRAGEDY OF HAMLET, PRINCE OF DENMARK
+    private static final String HAMLET_EN = loadResource("hamlet.txt");
+    private static final String ORWELL_UA = loadResource("orwell.txt");
 
-
-            by William Shakespeare
-
-
-
-            Dramatis Personae
-
-              Claudius, King of Denmark.
-              Marcellus, Officer.
-              Hamlet, son to the former, and nephew to the present king.
-              Polonius, Lord Chamberlain.
-              Horatio, friend to Hamlet.
-              Laertes, son to Polonius.
-              Voltemand, courtier.
-              Cornelius, courtier.
-              Rosencrantz, courtier.
-              Guildenstern, courtier.
-              Osric, courtier.
-              A Gentleman, courtier.
-              A Priest.
-              Marcellus, officer.
-              Bernardo, officer.
-              Francisco, a soldier
-              Reynaldo, servant to Polonius.
-              Players.
-              Two Clowns, gravediggers.
-              Fortinbras, Prince of Norway. \s
-              A Norwegian Captain.
-              English Ambassadors.
-
-              Getrude, Queen of Denmark, mother to Hamlet.
-              Ophelia, daughter to Polonius.
-
-              Ghost of Hamlet's Father.
-
-              Lords, ladies, Officers, Soldiers, Sailors, Messengers, Attendants.""";
-    private static final String ORWELL_UA = """
-            Стояла ясна та прохолодна квітнева днина, на годинниках пробило тринадцяту годину.
-            Вінстон Сміт, притискуючи підборіддя до грудей щоб сховатися від підступного вітру,
-            швидко ковзнув крізь скляні двері великого панельного будинку що звався "Перемога",
-            але не достатньо швидко щоб завадити вихру з піску та пилюки увійти разом з ним.
-
-            У вестибюлі тхнуло вареною капустою та старими драними килимками. В одному з його
-            кінців був кольоровий плакат, завеликий щоб розташувати його всередині квартири,
-            прибитий кнопками до стіни. На ньому було зображено лише величезне обличчя,
-            більш ніж метр завширшки : обличчя чоловіка приблизно сорока п'яти років,
-            з масивними чорними вусами та привабливо суворими та прямими рисами обличчя.
-            Вінстон пішов сходами. Не було сенсу намагатися піднятися ліфтом. Навіть у
-            найкращі часи він працював лише зрідка, а відтепер черговий електрик вимикав
-            його взагалі під час світлого часу доби. Це була частина політики заощадження
-            під час приготування до Тижня Ненависті. Квартира знаходилася на сьомому поверсі,
-            і Вінстон, який мав тридцять дев'ять років та варикозну виразку на правій
-            щиколотці, йшов дуже повільно, відпочиваючи по декілька разів під час сходження.
-            На кожному поверсі, навпроти ліфтової шахти, зі стіни пильно дивився плакат з
-            величезним обличчям. Це було одне з тих зображень,які створені так щоб очі
-            невідривно слідкували за тобою куди б ти не пішов. СТАРШИЙ БРАТ НАГЛЯДАЄ ЗА ТОБОЮ,
-            промовляв напис під зображенням.
-
-            Всередині квартири солодкий та принадний голос диктував перелік цифр, що якось
-            стосувалися виробництва чушкового чавуну. Цей голос лунав з видовженої металевої
-            тарелі, що нагадувала поблякле дзеркало, та була вмонтована в поверхню стіни праворуч.
-            Вінстон повернув вимикача і голос дещо вщух, одначе слова що лунали ще можна було
-            розібрати. Цей прилад (який звався телезахист) можна було приглушити, але не було
-            жодного способу вимкнути його повністю. Він підійшов до вікна : маленька, квола
-            фігурка, його худорлявого тіла лише підкреслювалась блакитним спецодягом,
-            що був уніформою його партії. Його волосся було яскраво світлим, його обличчя бул
-            природньо рум'яним та життєрадісним, його шкіра була огрубілою від господарчого
-            мила та тупого леза бритви, та вкрите крижаною маскою зими яка щойно скінчилася.
-            """; // 1984 by George Orwell
+    private static String loadResource(String resourceName) {
+        try {
+            return Files.readString(Path.of(
+                    MainTest.class.getResource("/" + resourceName).toURI()
+            ));
+        } catch (IOException | java.net.URISyntaxException e) {
+            throw new RuntimeException("Failed to load test resource: " + resourceName, e);
+        }
+    }
 
     private Path inputFilePathEN;
     private Path inputFilePathUA;
