@@ -209,6 +209,97 @@ class MainTest {
     }
 
     @Nested
+    @DisplayName("Encrypt edge cases")
+    class EncryptEdgeCases {
+
+        @Test
+        @DisplayName("empty file produces empty encrypted file")
+        void emptyFile() throws IOException {
+            Path testFile = createTestFile("empty.txt", "");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, 5);
+            assertEquals("", readFile(encryptedFile));
+        }
+
+        @Test
+        @DisplayName("single letter file")
+        void singleLetter() throws IOException {
+            Path testFile = createTestFile("single.txt", "A");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, 1);
+            assertEquals("B", readFile(encryptedFile));
+        }
+
+        @Test
+        @DisplayName("digits-only file is unchanged")
+        void digitsOnly() throws IOException {
+            Path testFile = createTestFile("digits.txt", "0123456789");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, 5);
+            assertEquals("0123456789", readFile(encryptedFile));
+        }
+
+        @Test
+        @DisplayName("key=0 produces identical content")
+        void keyZero() throws IOException {
+            Path testFile = createTestFile("k0.txt", "Hello, World!");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, 0);
+            assertEquals("Hello, World!", readFile(encryptedFile));
+        }
+
+        @Test
+        @DisplayName("key=52 (full alphabet cycle) produces identical content")
+        void keyFullCycle() throws IOException {
+            Path testFile = createTestFile("k52.txt", "Hello");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, 52);
+            assertEquals("Hello", readFile(encryptedFile));
+        }
+
+        @Test
+        @DisplayName("key=53 produces same output as key=1")
+        void keyOverCycle() throws IOException {
+            Path withK1 = execute(ENCRYPT_COMMAND, createTestFile("k1.txt", "Hello"), 1);
+            Path withK53 = execute(ENCRYPT_COMMAND, createTestFile("k53.txt", "Hello"), 53);
+            assertEquals(readFile(withK1), readFile(withK53));
+        }
+
+        @Test
+        @DisplayName("key=-52 produces identical content (full cycle backwards)")
+        void keyNegativeFullCycle() throws IOException {
+            Path testFile = createTestFile("kneg52.txt", "Hello");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, -52);
+            assertEquals("Hello", readFile(encryptedFile));
+        }
+
+        @Test
+        @DisplayName("special characters pass through unchanged")
+        void specialCharsPassThrough() throws IOException {
+            Path testFile = createTestFile("special.txt", ".,!? \t");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, 5);
+            assertEquals(".,!? \t", readFile(encryptedFile));
+        }
+
+        @Test
+        @DisplayName("multiline content preserves newlines")
+        void multilineContent() throws IOException {
+            Path testFile = createTestFile("multi.txt", "abc\ndef\n");
+            Path encryptedFile = execute(ENCRYPT_COMMAND, testFile, 1);
+            assertEquals("bcd\nefg\n", readFile(encryptedFile));
+        }
+    }
+
+    @Nested
+    @DisplayName("Original file safety")
+    class OriginalFileSafety {
+
+        @Test
+        @DisplayName("encrypt does not modify the input file")
+        void encryptDoesNotModifyInput() throws IOException {
+            String original = "Hello, World!";
+            Path testFile = createTestFile("safety.txt", original);
+            execute(ENCRYPT_COMMAND, testFile, 5);
+            assertEquals(original, Files.readString(testFile));
+        }
+    }
+
+    @Nested
     @DisplayName("Ukrainian Language Tests")
     @EnabledIf("isUkrainianLanguageTestEnabled")
     class UkrainianLanguageTest {
