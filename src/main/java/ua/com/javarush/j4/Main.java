@@ -8,6 +8,15 @@ package ua.com.javarush.j4;
  */
 public class Main {
     public static void main(String[] args) {
+
         // TODO: реалізуй CLI шифру Цезаря. Дивись MainTest.
+
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
     }
 }
