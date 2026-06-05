@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class FileService {
-    void encryptFile(String filePath, int key) throws IOException {
+    public void encryptFile(String filePath, int key) throws IOException {
 
         try (FileInputStream inputStream = new FileInputStream(filePath);
              FileOutputStream outputStream = new FileOutputStream(filePath + "[ENCRYPTED]");
@@ -22,7 +22,7 @@ public class FileService {
         }
     }
 
-    void decryptFile(String filePath, int key) throws IOException {
+    public void decryptFile(String filePath, int key) throws IOException {
 
         try (FileInputStream inputStream = new FileInputStream(filePath);
              FileOutputStream outputStream = new FileOutputStream(filePath + "[DECRYPTED]");

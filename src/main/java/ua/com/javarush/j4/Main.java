@@ -13,8 +13,6 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        // TODO: реалізуй CLI шифру Цезаря. Дивись MainTest.
-
         FileService fileService = new FileService();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter command (ENCRYPT/DECRYPT/BRUTE_FORCE):");

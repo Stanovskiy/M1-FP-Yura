@@ -3,7 +3,8 @@ package ua.com.javarush.j4;
 import java.io.*;
 
 public class BruteForce {
-    void bruteForce(String filePath) throws IOException {
+    public void bruteForce(String filePath) throws IOException {
+
         CaesarCipher caesarCipher = new CaesarCipher();
         String alphabet = caesarCipher.alphabetEu;
         FileInputStream inputStream = null;
