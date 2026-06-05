@@ -35,7 +35,7 @@ public class Main {
             } else {
                 System.out.println("Invalid command.");
             }
-        } catch (InputMismatchException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             scanner.close();
