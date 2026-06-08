@@ -8,7 +8,7 @@ public class FileService {
     public void encryptFile(String filePath, int key) throws IOException {
 
         try (FileInputStream inputStream = new FileInputStream(filePath);
-             FileOutputStream outputStream = new FileOutputStream("[ENCRYPTED]" + filePath);
+             FileOutputStream outputStream = new FileOutputStream(filePath + "[ENCRYPTED]");
         ) {
             int bytesRead;
             while ((bytesRead = inputStream.read()) != -1) {
@@ -25,7 +25,7 @@ public class FileService {
     public void decryptFile(String filePath, int key) throws IOException {
 
         try (FileInputStream inputStream = new FileInputStream(filePath);
-             FileOutputStream outputStream = new FileOutputStream("[DECRYPTED]" + filePath);
+             FileOutputStream outputStream = new FileOutputStream(filePath + "[DECRYPTED]");
         ) {
             int bytesRead;
             while ((bytesRead = inputStream.read()) != -1) {
