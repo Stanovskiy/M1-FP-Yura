@@ -1,7 +1,7 @@
 package ua.com.javarush.j4;
 
 public class CaesarCipher {
-    final String alphabetEu = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,«»\"':!? ";
+    final String alphabetEu = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     char encryptChar(char character, int key) {
         int index = alphabetEu.indexOf(character);
