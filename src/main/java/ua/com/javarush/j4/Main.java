@@ -1,35 +1,50 @@
 package ua.com.javarush.j4;
 
 import java.io.IOException;
-import java.util.InputMismatchException;
+import java.nio.file.Files;
 import java.util.Scanner;
 
-/**
- * Точка входу криптоаналізатора шифру Цезаря.
- *
- * <p>Реалізацію та структуру класів обирай самостійно. Контракт CLI і поведінки
- * визначений у {@code MainTest} — зеленій тести.
- */
 public class Main {
     public static void main(String[] args) {
 
+        try {
+            Parser count = Parser.parse(args);
+
+            if (count.getMode() == null) {
+                throw new IllegalArgumentException("Немає ніяких аргументів в Майні");
+            }
+            if (count.getFile() == null) {
+                throw new IllegalArgumentException("Missing -f (file path). Please specify file");
+            }
+            if (count.getMode() != Mode.BRUTE_FORCE && count.getKey() == null) {
+                throw new IllegalArgumentException("Missing -k (shift key)");
+            }
+            if (!Files.exists(count.getFile())) {
+                throw new IllegalArgumentException("File not found: " + count.getFile());
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
         FileService fileService = new FileService();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter command (ENCRYPT/DECRYPT/BRUTE_FORCE):");
-        String command = scanner.nextLine();
+        System.out.println("Enter command (1.ENCRYPT/Зашифровать 2. DECRYPT/Дешифровка 3. BRUTE_FORCE):");
+        int command = scanner.nextInt();
         System.out.println("Enter input file path:");
-        String filePath = scanner.nextLine();
+        Scanner scannera = new Scanner(System.in);
+        String filePath = scannera.nextLine();
 
         try {
-            if ("ENCRYPT".equalsIgnoreCase(command) || "DECRYPT".equalsIgnoreCase(command)) {
+            if (command == 1 || command == 2) {
                 System.out.println("Enter key:");
                 int key = scanner.nextInt();
-                if ("ENCRYPT".equalsIgnoreCase(command)) {
+                if (command == 1) {
                     fileService.encryptFile(filePath, key);
                 } else {
                     fileService.decryptFile(filePath, key);
                 }
-            } else if ("BRUTE_FORCE".equalsIgnoreCase(command)) {
+            } else if (command == 3) {
                 BruteForce bruteForces = new BruteForce();
                 bruteForces.bruteForce(filePath);
             } else {

@@ -7,8 +7,13 @@ import java.io.IOException;
 public class FileService {
     public void encryptFile(String filePath, int key) throws IOException {
 
+        int lastDot = filePath.lastIndexOf('.');
+        String encryptedPath = (lastDot != -1)
+                ? filePath.substring(0, lastDot) + "[ENCRYPTED]" + filePath.substring(lastDot)
+                : filePath + "[ENCRYPTED]";
+
         try (FileInputStream inputStream = new FileInputStream(filePath);
-             FileOutputStream outputStream = new FileOutputStream(filePath + "[ENCRYPTED]");
+             FileOutputStream outputStream = new FileOutputStream(encryptedPath);
         ) {
             int bytesRead;
             while ((bytesRead = inputStream.read()) != -1) {
@@ -24,8 +29,13 @@ public class FileService {
 
     public void decryptFile(String filePath, int key) throws IOException {
 
+        int lastDots = filePath.lastIndexOf('.');
+        String decryptPath = (lastDots != -1)
+                ? filePath.substring(0, lastDots) + "[DECRYPTED]" + filePath.substring(lastDots)
+                : filePath + "[DECRYPTED]";
+
         try (FileInputStream inputStream = new FileInputStream(filePath);
-             FileOutputStream outputStream = new FileOutputStream(filePath + "[DECRYPTED]");
+             FileOutputStream outputStream = new FileOutputStream(decryptPath);
         ) {
             int bytesRead;
             while ((bytesRead = inputStream.read()) != -1) {
