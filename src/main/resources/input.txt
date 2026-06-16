@@ -1,1 +1,5 @@
-Hello World
+The quick brown fox jumps over the lazy dog.
+This sentence contains every letter of the English alphabet,
+which makes it a useful sample for testing a Caesar cipher.
+Special characters like commas, periods, and spaces should
+pass through encryption unchanged.
